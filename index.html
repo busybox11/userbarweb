@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Visitor TT1 BRK', 'sans-serif'],
+          },
+          screens: {
+            '3xl': '1600px',
+            '4xl': '1920px',
+            '5xl': '2560px',
+          },
+        }
+      }
+    }
+  </script>
+
+  <script src="html2canvas.js"></script> 
+
+  <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+<body class="bg-zinc-900 text-white flex items-center justify-center p-12 h-screen w-screen" style="line-height: 0.275">
+    <div x-data="
+        {
+            bgurl: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Y29kaW5nfGVufDB8fDB8fA%3D%3D&w=1000&q=80',
+            text: 'VSCode user',
+            iconurl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/1200px-Visual_Studio_Code_1.35_icon.svg.png'
+        }" class="flex flex-col gap-6 w-4/5 h-2/3 max-w-screen-2xl leading-4">
+        <h1 class="text-3xl font-bold">
+            Userbar generator
+        </h1>
+
+        <div id="userbar" class="relative mr-auto overflow-hidden h-[19px] w-[350px]" style="line-height: normal">
+            <img class="-z-10 absolute h-[19px] w-[350px] object-cover" :src="bgurl" alt="">
+            <img class="absolute left-4 -bottom-1.5 z-20 h-[19px] z-10" :src="iconurl" alt="">
+            <div class="absolute h-[19px] w-[350px] flex justify-end pr-4 z-30">
+                <span x-text="text" class="my-auto text-xs" style="paint-order: stroke fill; -webkit-text-stroke: 1px black;"></span>
+            </div>
+            <img class="h-[19px] w-[350px] z-10" src="userbar template.svg">
+            <img class="h-[19px] w-[350px] z-30" src="userbar template shadow overlay.svg">
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label for="bgurl">Background image URL</label>
+            <input type="text" id="bgurl" x-model="bgurl" class="bg-zinc-500 text-white px-3 py-1 rounded-lg">
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label for="text">Text</label>
+            <input type="text" id="text" x-model="text" class="bg-zinc-500 text-white px-3 py-1 rounded-lg">
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label for="text">Icon URL</label>
+            <input type="text" id="text" x-model="iconurl" class="bg-zinc-500 text-white px-3 py-1 rounded-lg">
+        </div>
+
+        <button class="bg-zinc-500 text-white p-2 rounded-md" @click="downloadImage()">Download</button>
+    </div>
+
+    <script>
+        function downloadImage() {
+            html2canvas(document.getElementById('userbar'), {
+                allowTaint: true,
+                useCORS: true
+            }).then(function(canvas) {
+                var a = document.createElement('a');
+                a.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                a.download = 'userbar.png';
+                a.click();
+            });
+        }
+    </script>
+</body>
+</html>
